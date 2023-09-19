@@ -1,6 +1,7 @@
 package HeyPorori.transaction.domain;
 
 import HeyPorori.transaction.config.BaseTimeEntity;
+import HeyPorori.transaction.dto.PostReq;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
@@ -44,7 +45,7 @@ public class Transaction extends BaseTimeEntity {
     @Column(nullable = false)
     private Double longitude;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Category category;
 
     @ColumnDefault("'ACTIVE'")
@@ -67,6 +68,19 @@ public class Transaction extends BaseTimeEntity {
         this.longitude = longitude;
         this.category = category;
         this.status = status;
+    }
+
+    public static Transaction toEntity(PostReq postReq, Long userId){
+        return Transaction.builder()
+                .userId(userId)
+                .title(postReq.getTitle())
+                .content(postReq.getContent())
+                .recommend(0)
+                .address("필동")
+                .latitude(0.0)
+                .longitude(0.0)
+                .category(Category.parsing(postReq.getCategory()))
+                .build();
     }
 
     public void changeStatus(String status) {

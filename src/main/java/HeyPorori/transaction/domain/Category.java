@@ -1,6 +1,12 @@
 package HeyPorori.transaction.domain;
 
+import HeyPorori.transaction.config.BaseException;
+import HeyPorori.transaction.config.BaseResponseStatus;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
+
+import java.util.Arrays;
+import java.util.stream.Stream;
 
 @Getter
 public enum Category {
@@ -19,5 +25,11 @@ public enum Category {
     Category(String name, String description) {
         this.name = name;
         this.description = description;
+    }
+
+    public static Category parsing(String inputValue) {
+        return Arrays.stream(Category.values())
+                .filter(r -> r.name.equals(inputValue))
+                .findAny().orElse(null);
     }
 }
