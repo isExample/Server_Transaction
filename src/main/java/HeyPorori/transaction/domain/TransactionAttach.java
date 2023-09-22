@@ -1,6 +1,7 @@
 package HeyPorori.transaction.domain;
 
 import HeyPorori.transaction.config.BaseTimeEntity;
+import HeyPorori.transaction.dto.PostReq;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -29,5 +30,12 @@ public class TransactionAttach extends BaseTimeEntity {
     public TransactionAttach(Transaction transactionId, String imageUrl){
         this.transactionId = transactionId;
         this.imageUrl = imageUrl;
+    }
+
+    public static TransactionAttach toEntity(Transaction transaction, String imageUrl){
+        return TransactionAttach.builder()
+                .transactionId(transaction)
+                .imageUrl(imageUrl)
+                .build();
     }
 }

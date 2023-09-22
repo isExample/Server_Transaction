@@ -14,9 +14,12 @@ import javax.transaction.Transactional;
 public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final UserService userService;
+    private final TransactionAttachService transactionAttachService;
 
     public void createPost(String token, PostReq postReq) {
         userService.sendTestJwtRequest(token);
-        transactionRepository.save(Transaction.toEntity(postReq, userService.getUserId(token)));
+        Transaction txn = Transaction.toEntity(postReq, userService.getUserId(token));
+        txn.setAttachList(transactionAttachService.savePostAttach(txn, postReq.getImageNameList()));
+        transactionRepository.save(txn);
     }
 }
