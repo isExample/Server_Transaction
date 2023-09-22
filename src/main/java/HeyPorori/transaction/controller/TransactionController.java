@@ -4,13 +4,14 @@ import HeyPorori.transaction.config.BaseException;
 import HeyPorori.transaction.config.BaseResponse;
 import HeyPorori.transaction.config.BaseResponseStatus;
 import HeyPorori.transaction.dto.PostReq;
+import HeyPorori.transaction.dto.PreSignedUrlRes;
+import HeyPorori.transaction.service.AmazonS3Service;
 import HeyPorori.transaction.service.TransactionService;
 import HeyPorori.transaction.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,7 @@ import javax.validation.Valid;
 public class TransactionController {
     private final TransactionService transactionService;
     private final UserService userService;
+    private final AmazonS3Service amazonS3Service;
 
     // 테스트용 APIs
     @Operation(summary = "Swagger UI 테스트용 메서드", description = "프로젝트 초기 Swagger UI 정상작동을 확인하기 위한 메서드입니다.")
@@ -46,5 +48,12 @@ public class TransactionController {
     public BaseResponse<BaseResponseStatus> createPost(@RequestHeader("Authorization") String token, @RequestBody @Valid PostReq postReq) {
         transactionService.createPost(token, postReq);
         return new BaseResponse<>(BaseResponseStatus.SUCCESS);
+    }
+
+    @Operation(summary = "Pre-Signed Url 발급 API", description = "AWS S3 이미지 업로드 권한을 요청하기 위한 API입니다.")
+    @ApiResponse(responseCode = "200", description = "요청 성공", content = @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class)))
+    @GetMapping("/url")
+    public BaseResponse<PreSignedUrlRes> getPreSignedUrl(@RequestHeader("Authorization") String token) throws BaseException {
+        return new BaseResponse<>(amazonS3Service.getPreSignedUrl());
     }
 }
