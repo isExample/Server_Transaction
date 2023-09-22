@@ -1,7 +1,7 @@
 package HeyPorori.transaction.domain;
 
 import HeyPorori.transaction.config.BaseTimeEntity;
-import HeyPorori.transaction.dto.PostReq;
+import HeyPorori.transaction.dto.CreatePostReq;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
@@ -71,7 +71,7 @@ public class Transaction extends BaseTimeEntity {
         this.status = status;
     }
 
-    public static Transaction toEntity(PostReq postReq, Long userId){
+    public static Transaction toEntity(CreatePostReq postReq, Long userId){
         return Transaction.builder()
                 .userId(userId)
                 .title(postReq.getTitle())

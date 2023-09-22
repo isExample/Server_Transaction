@@ -1,7 +1,6 @@
 package HeyPorori.transaction.domain;
 
 import HeyPorori.transaction.config.BaseTimeEntity;
-import HeyPorori.transaction.dto.PostReq;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 

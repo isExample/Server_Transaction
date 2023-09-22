@@ -1,12 +1,9 @@
 package HeyPorori.transaction.dto;
 
-import HeyPorori.transaction.domain.Category;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.List;
@@ -14,7 +11,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostReq {
+public class CreatePostReq {
     @Size(min = 1, max = 20, message = "거래 게시글 제목의 길이는 1 이상 20 이하입니다.")
     private String title;
     @Size(min = 1, max = 200, message = "거래 게시글 내용의 길이는 1 이상 200 이하입니다.")

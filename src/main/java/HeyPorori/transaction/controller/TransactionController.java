@@ -3,8 +3,8 @@ package HeyPorori.transaction.controller;
 import HeyPorori.transaction.config.BaseException;
 import HeyPorori.transaction.config.BaseResponse;
 import HeyPorori.transaction.config.BaseResponseStatus;
-import HeyPorori.transaction.dto.PostReq;
-import HeyPorori.transaction.dto.PostRes;
+import HeyPorori.transaction.dto.CreatePostReq;
+import HeyPorori.transaction.dto.GetPostsRes;
 import HeyPorori.transaction.dto.PreSignedUrlRes;
 import HeyPorori.transaction.service.AmazonS3Service;
 import HeyPorori.transaction.service.TransactionService;
@@ -47,7 +47,7 @@ public class TransactionController {
     @Operation(summary = "중고거래 게시글 작성 API", description = "중고거래 서비스의 거래 게시글을 작성하기 위한 API입니다.")
     @ApiResponse(responseCode = "200", description = "요청 성공", content = @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class)))
     @PostMapping("/post")
-    public BaseResponse<BaseResponseStatus> createPost(@RequestHeader("Authorization") String token, @RequestBody @Valid PostReq postReq) {
+    public BaseResponse<BaseResponseStatus> createPost(@RequestHeader("Authorization") String token, @RequestBody @Valid CreatePostReq postReq) {
         transactionService.createPost(token, postReq);
         return new BaseResponse<>(BaseResponseStatus.SUCCESS);
     }
@@ -62,7 +62,7 @@ public class TransactionController {
     @Operation(summary = "중고거래 게시글 목록 조회 API", description = "중고거래 서비스의 거래 게시글 목록을 조회하기 위한 API입니다.")
     @ApiResponse(responseCode = "200", description = "요청 성공", content = @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class)))
     @GetMapping("/post")
-    public BaseResponse<List<PostRes>> getAllPostByCategory(String category) throws BaseException {
+    public BaseResponse<List<GetPostsRes>> getAllPostByCategory(String category) throws BaseException {
         return new BaseResponse<>(transactionService.findAllPostByCategory(category));
     }
 }
