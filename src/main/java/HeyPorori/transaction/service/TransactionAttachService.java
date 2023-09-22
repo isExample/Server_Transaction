@@ -23,4 +23,13 @@ public class TransactionAttachService {
         }
         return TransactionAttachList;
     }
+
+    public String getFirstImageName(Transaction transaction){
+        List<TransactionAttach> attachList = transaction.getAttachList();
+        if(attachList.size() == 0){
+            return "";
+        } else{
+            return attachList.get(0).getImageUrl();
+        }
+    }
 }

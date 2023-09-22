@@ -4,6 +4,7 @@ import HeyPorori.transaction.config.BaseException;
 import HeyPorori.transaction.config.BaseResponse;
 import HeyPorori.transaction.config.BaseResponseStatus;
 import HeyPorori.transaction.dto.PostReq;
+import HeyPorori.transaction.dto.PostRes;
 import HeyPorori.transaction.dto.PreSignedUrlRes;
 import HeyPorori.transaction.service.AmazonS3Service;
 import HeyPorori.transaction.service.TransactionService;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Tag(name = "중고거래", description = "중고거래 관련 API 입니다.")
@@ -55,5 +57,12 @@ public class TransactionController {
     @GetMapping("/url")
     public BaseResponse<PreSignedUrlRes> getPreSignedUrl(@RequestHeader("Authorization") String token) throws BaseException {
         return new BaseResponse<>(amazonS3Service.getPreSignedUrl());
+    }
+
+    @Operation(summary = "중고거래 게시글 목록 조회 API", description = "중고거래 서비스의 거래 게시글 목록을 조회하기 위한 API입니다.")
+    @ApiResponse(responseCode = "200", description = "요청 성공", content = @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class)))
+    @GetMapping("/post")
+    public BaseResponse<List<PostRes>> getAllPostByCategory(String category) throws BaseException {
+        return new BaseResponse<>(transactionService.findAllPostByCategory(category));
     }
 }
