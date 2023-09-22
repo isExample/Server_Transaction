@@ -45,6 +45,7 @@ public class Transaction extends BaseTimeEntity {
     @Column(nullable = false)
     private Double longitude;
 
+    @Enumerated(value = EnumType.STRING)
     @Column(nullable = true)
     private Category category;
 
