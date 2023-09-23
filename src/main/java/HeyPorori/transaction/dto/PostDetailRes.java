@@ -21,8 +21,9 @@ public class PostDetailRes {
     private String createdAt;
     private int recommend;
     private List<String> imageNameList;
+    private boolean isOwner;
 
-    public static PostDetailRes toDto(Transaction transaction, String nickName, String createdAt, List<String> imageNameList){
+    public static PostDetailRes toDto(Transaction transaction, String nickName, String createdAt, List<String> imageNameList, boolean isOwner){
         return PostDetailRes.builder()
                 .transactionId(transaction.getTransactionId())
                 .title(transaction.getTitle())
@@ -32,6 +33,7 @@ public class PostDetailRes {
                 .createdAt(createdAt)
                 .recommend(transaction.getRecommendList().size())
                 .imageNameList(imageNameList)
+                .isOwner(isOwner)
                 .build();
     }
 }

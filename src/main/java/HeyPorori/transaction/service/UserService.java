@@ -4,6 +4,7 @@ import HeyPorori.transaction.config.BaseException;
 import HeyPorori.transaction.config.BaseResponse;
 import HeyPorori.transaction.config.BaseResponseStatus;
 import HeyPorori.transaction.domain.UserInfo;
+import HeyPorori.transaction.dto.UserInfoRes;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
@@ -20,6 +21,8 @@ public class UserService {
     public Long getUserId(String token) {
         return postTokenRequest(token).getUserId();
     }
+
+    public UserInfoRes getUserIdAndNickName(String token){ return UserInfoRes.toDto(postTokenRequest(token)); }
 
     private UserInfo postTokenRequest(String token) {
         return webClient.get()

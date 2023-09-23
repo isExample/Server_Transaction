@@ -7,6 +7,7 @@ import HeyPorori.transaction.domain.Transaction;
 import HeyPorori.transaction.dto.CreatePostReq;
 import HeyPorori.transaction.dto.PostDetailRes;
 import HeyPorori.transaction.dto.PostsRes;
+import HeyPorori.transaction.dto.UserInfoRes;
 import HeyPorori.transaction.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -49,13 +50,14 @@ public class TransactionService {
         return postResList;
     }
 
-    public PostDetailRes getPostDetail(Long transactionId){
-        // 더미 닉네임 - 추후 변경
-        String nickName = "dummy_data";
+    public PostDetailRes getPostDetail(String token, Long transactionId){
         Transaction txn = transactionRepository.findByTransactionIdAndStatus(transactionId, "ACTIVE")
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.POST_NOT_FOUND));
+        UserInfoRes userInfoRes = userService.getUserIdAndNickName(token);
+        boolean isOwner = false;
+        if(userInfoRes.getUserId() == txn.getUserId()) isOwner = true;
         List<String> imageNameList = transactionAttachService.getImageNameList(txn);
-        PostDetailRes postDetailRes = PostDetailRes.toDto(txn, nickName, toFormattedDate(txn.getCreatedAt()), imageNameList);
+        PostDetailRes postDetailRes = PostDetailRes.toDto(txn, userInfoRes.getNickName(), toFormattedDate(txn.getCreatedAt()), imageNameList, isOwner);
         return postDetailRes;
     }
 
