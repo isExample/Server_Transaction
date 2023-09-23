@@ -32,4 +32,13 @@ public class TransactionAttachService {
             return attachList.get(0).getImageUrl();
         }
     }
+
+    public List<String> getImageNameList(Transaction transaction){
+        List<TransactionAttach> attachList = transaction.getAttachList();
+        List<String> nameList = new ArrayList<>();
+        for(TransactionAttach attach: attachList){
+            nameList.add(attach.getImageUrl());
+        }
+        return nameList;
+    }
 }

@@ -4,6 +4,7 @@ import HeyPorori.transaction.config.BaseException;
 import HeyPorori.transaction.config.BaseResponse;
 import HeyPorori.transaction.config.BaseResponseStatus;
 import HeyPorori.transaction.dto.CreatePostReq;
+import HeyPorori.transaction.dto.GetPostDetailRes;
 import HeyPorori.transaction.dto.GetPostsRes;
 import HeyPorori.transaction.dto.PreSignedUrlRes;
 import HeyPorori.transaction.service.AmazonS3Service;
@@ -64,5 +65,12 @@ public class TransactionController {
     @GetMapping("/post")
     public BaseResponse<List<GetPostsRes>> getAllPostByCategory(String category) throws BaseException {
         return new BaseResponse<>(transactionService.findAllPostByCategory(category));
+    }
+
+    @Operation(summary = "중고거래 게시글 상세 조회 API", description = "중고거래 서비스의 거래 게시글 상세정보를 조회하기 위한 API입니다.")
+    @ApiResponse(responseCode = "200", description = "요청 성공", content = @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class)))
+    @GetMapping("/post/{transactionId}")
+    public BaseResponse<GetPostDetailRes> getPostDetail(@PathVariable Long transactionId) throws BaseException {
+        return new BaseResponse<>(transactionService.getPostDetail(transactionId));
     }
 }

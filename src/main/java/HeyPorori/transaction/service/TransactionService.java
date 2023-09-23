@@ -3,12 +3,15 @@ package HeyPorori.transaction.service;
 import HeyPorori.transaction.domain.Category;
 import HeyPorori.transaction.domain.Transaction;
 import HeyPorori.transaction.dto.CreatePostReq;
+import HeyPorori.transaction.dto.GetPostDetailRes;
 import HeyPorori.transaction.dto.GetPostsRes;
 import HeyPorori.transaction.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,5 +45,19 @@ public class TransactionService {
         }
 
         return postResList;
+    }
+
+    public GetPostDetailRes getPostDetail(Long transactionId){
+        // 더미 닉네임 - 추후 변경
+        String nickName = "dummy_data";
+        Transaction txn = transactionRepository.findByTransactionIdAndStatus(transactionId, "ACTIVE");
+        List<String> imageNameList = transactionAttachService.getImageNameList(txn);
+        GetPostDetailRes postDetailRes = GetPostDetailRes.toDto(txn, nickName, toFormattedDate(txn.getCreatedAt()), imageNameList);
+        return postDetailRes;
+    }
+
+    public String toFormattedDate(LocalDateTime baseDateTime){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+        return baseDateTime.format(formatter);
     }
 }
