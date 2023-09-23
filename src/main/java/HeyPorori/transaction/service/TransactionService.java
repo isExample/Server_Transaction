@@ -1,5 +1,7 @@
 package HeyPorori.transaction.service;
 
+import HeyPorori.transaction.config.BaseException;
+import HeyPorori.transaction.config.BaseResponseStatus;
 import HeyPorori.transaction.domain.Category;
 import HeyPorori.transaction.domain.Transaction;
 import HeyPorori.transaction.dto.CreatePostReq;
@@ -50,10 +52,20 @@ public class TransactionService {
     public PostDetailRes getPostDetail(Long transactionId){
         // 더미 닉네임 - 추후 변경
         String nickName = "dummy_data";
-        Transaction txn = transactionRepository.findByTransactionIdAndStatus(transactionId, "ACTIVE");
+        Transaction txn = transactionRepository.findByTransactionIdAndStatus(transactionId, "ACTIVE")
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.POST_NOT_FOUND));
         List<String> imageNameList = transactionAttachService.getImageNameList(txn);
         PostDetailRes postDetailRes = PostDetailRes.toDto(txn, nickName, toFormattedDate(txn.getCreatedAt()), imageNameList);
         return postDetailRes;
+    }
+
+    public void deletePost(String token, Long transactionId){
+        Long userId = userService.getUserId(token);
+        Transaction txn = transactionRepository.findByTransactionIdAndStatus(transactionId, "ACTIVE")
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.POST_NOT_FOUND));
+        if(userId != txn.getUserId()) throw new BaseException(BaseResponseStatus.INVALID_POST_OWNER);
+        txn.changeStatus("INACTIVE");
+        transactionRepository.save(txn);
     }
 
     public String toFormattedDate(LocalDateTime baseDateTime){

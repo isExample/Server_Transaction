@@ -73,4 +73,12 @@ public class TransactionController {
     public BaseResponse<PostDetailRes> getPostDetail(@PathVariable Long transactionId) throws BaseException {
         return new BaseResponse<>(transactionService.getPostDetail(transactionId));
     }
+
+    @Operation(summary = "중고거래 게시글 삭제 API", description = "중고거래 서비스의 거래 게시글을 삭제하기 위한 API입니다.")
+    @ApiResponse(responseCode = "200", description = "요청 성공", content = @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class)))
+    @DeleteMapping("/post/{transactionId}")
+    public BaseResponse<String> deletePost(@RequestHeader("Authorization") String token, @PathVariable Long transactionId) throws BaseException {
+        transactionService.deletePost(token, transactionId);
+        return new BaseResponse<>("게시글이 삭제되었습니다.");
+    }
 }

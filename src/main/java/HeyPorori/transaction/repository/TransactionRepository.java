@@ -11,6 +11,6 @@ import java.util.Optional;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
     List<Transaction> findByStatus(String status);
-    Transaction findByTransactionIdAndStatus(Long transactionId, String status);
+    Optional<Transaction> findByTransactionIdAndStatus(Long transactionId, String status);
     List<Transaction> findByCategoryAndStatus(Category category, String status);
 }
