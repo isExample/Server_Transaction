@@ -3,8 +3,8 @@ package HeyPorori.transaction.service;
 import HeyPorori.transaction.domain.Category;
 import HeyPorori.transaction.domain.Transaction;
 import HeyPorori.transaction.dto.CreatePostReq;
-import HeyPorori.transaction.dto.GetPostDetailRes;
-import HeyPorori.transaction.dto.GetPostsRes;
+import HeyPorori.transaction.dto.PostDetailRes;
+import HeyPorori.transaction.dto.PostsRes;
 import HeyPorori.transaction.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,7 +30,7 @@ public class TransactionService {
         transactionRepository.save(txn);
     }
 
-    public List<GetPostsRes> findAllPostByCategory(String category){
+    public List<PostsRes> findAllPostByCategory(String category){
         List<Transaction> txnList = new ArrayList<>();
         if(category.equals("NONE")){
             txnList = transactionRepository.findByStatus("ACTIVE");
@@ -38,21 +38,21 @@ public class TransactionService {
             txnList = transactionRepository.findByCategoryAndStatus(Category.parsing(category), "ACTIVE");
         }
 
-        List<GetPostsRes> postResList = new ArrayList<>();
+        List<PostsRes> postResList = new ArrayList<>();
         for(Transaction txn: txnList){
-            GetPostsRes postRes = GetPostsRes.toDto(txn, transactionAttachService.getFirstImageName(txn));
+            PostsRes postRes = PostsRes.toDto(txn, transactionAttachService.getFirstImageName(txn));
             postResList.add(postRes);
         }
 
         return postResList;
     }
 
-    public GetPostDetailRes getPostDetail(Long transactionId){
+    public PostDetailRes getPostDetail(Long transactionId){
         // 더미 닉네임 - 추후 변경
         String nickName = "dummy_data";
         Transaction txn = transactionRepository.findByTransactionIdAndStatus(transactionId, "ACTIVE");
         List<String> imageNameList = transactionAttachService.getImageNameList(txn);
-        GetPostDetailRes postDetailRes = GetPostDetailRes.toDto(txn, nickName, toFormattedDate(txn.getCreatedAt()), imageNameList);
+        PostDetailRes postDetailRes = PostDetailRes.toDto(txn, nickName, toFormattedDate(txn.getCreatedAt()), imageNameList);
         return postDetailRes;
     }
 

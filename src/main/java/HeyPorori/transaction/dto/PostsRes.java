@@ -10,14 +10,14 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetPostsRes {
+public class PostsRes {
     private String title;
     private String imageName;
     private String address;
     private int recommend;
 
-    public static GetPostsRes toDto(Transaction transaction, String imageName){
-        return GetPostsRes.builder()
+    public static PostsRes toDto(Transaction transaction, String imageName){
+        return PostsRes.builder()
                 .title(transaction.getTitle())
                 .imageName(imageName)
                 .address(transaction.getAddress())
