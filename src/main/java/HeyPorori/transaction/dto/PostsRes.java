@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostsRes {
+    private Long transactionId;
     private String title;
     private String imageName;
     private String address;
@@ -18,6 +19,7 @@ public class PostsRes {
 
     public static PostsRes toDto(Transaction transaction, String imageName){
         return PostsRes.builder()
+                .transactionId(transaction.getTransactionId())
                 .title(transaction.getTitle())
                 .imageName(imageName)
                 .address(transaction.getAddress())
