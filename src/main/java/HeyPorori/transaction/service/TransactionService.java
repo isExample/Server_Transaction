@@ -89,6 +89,19 @@ public class TransactionService {
         }
     }
 
+    public List<PostsRes> findAllPostByKeyword(String keyword){
+        List<Transaction> txnList = new ArrayList<>();
+        txnList = transactionRepository.findByContentContainingAndStatus(keyword, "ACTIVE");
+
+        List<PostsRes> postResList = new ArrayList<>();
+        for(Transaction txn: txnList){
+            PostsRes postRes = PostsRes.toDto(txn, transactionAttachService.getFirstImageName(txn));
+            postResList.add(postRes);
+        }
+
+        return postResList;
+    }
+
     public String toFormattedDate(LocalDateTime baseDateTime){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
         return baseDateTime.format(formatter);

@@ -86,4 +86,11 @@ public class TransactionController {
         transactionService.recommendPost(token, req);
         return new BaseResponse<>("게시글을 추천했습니다.");
     }
+
+    @Operation(summary = "중고거래 게시글 검색 API", description = "중고거래 서비스의 거래 게시글을 검색하기 위한 API입니다.")
+    @ApiResponse(responseCode = "200", description = "요청 성공", content = @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class)))
+    @GetMapping("/search/{keyword}")
+    public BaseResponse<List<PostsRes>> recommendPost(@PathVariable String keyword) throws BaseException {
+        return new BaseResponse<>(transactionService.findAllPostByKeyword(keyword));
+    }
 }
