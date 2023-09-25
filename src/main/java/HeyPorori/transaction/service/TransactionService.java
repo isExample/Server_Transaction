@@ -8,6 +8,7 @@ import HeyPorori.transaction.dto.CreatePostReq;
 import HeyPorori.transaction.dto.PostDetailRes;
 import HeyPorori.transaction.dto.PostsRes;
 import HeyPorori.transaction.dto.UserInfoRes;
+import HeyPorori.transaction.repository.RecommendRepository;
 import HeyPorori.transaction.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final UserService userService;
     private final TransactionAttachService transactionAttachService;
+    private final RecommendRepository recommendRepository;
 
     public void createPost(String token, CreatePostReq postReq) {
         userService.sendTestJwtRequest(token);
@@ -57,7 +59,8 @@ public class TransactionService {
         boolean isOwner = false;
         if(userInfoRes.getUserId() == txn.getUserId()) isOwner = true;
         List<String> imageNameList = transactionAttachService.getImageNameList(txn);
-        PostDetailRes postDetailRes = PostDetailRes.toDto(txn, userInfoRes.getNickName(), toFormattedDate(txn.getCreatedAt()), imageNameList, isOwner);
+        boolean isRecommends = recommendRepository.existsByTransactionIdAndUserId(txn, userInfoRes.getUserId());
+        PostDetailRes postDetailRes = PostDetailRes.toDto(txn, userInfoRes.getNickName(), toFormattedDate(txn.getCreatedAt()), imageNameList, isOwner, isRecommends);
         return postDetailRes;
     }
 
