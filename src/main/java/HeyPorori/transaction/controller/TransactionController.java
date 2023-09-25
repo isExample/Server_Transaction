@@ -3,10 +3,7 @@ package HeyPorori.transaction.controller;
 import HeyPorori.transaction.config.BaseException;
 import HeyPorori.transaction.config.BaseResponse;
 import HeyPorori.transaction.config.BaseResponseStatus;
-import HeyPorori.transaction.dto.CreatePostReq;
-import HeyPorori.transaction.dto.PostDetailRes;
-import HeyPorori.transaction.dto.PostsRes;
-import HeyPorori.transaction.dto.PreSignedUrlRes;
+import HeyPorori.transaction.dto.*;
 import HeyPorori.transaction.service.AmazonS3Service;
 import HeyPorori.transaction.service.TransactionService;
 import HeyPorori.transaction.service.UserService;
@@ -80,5 +77,13 @@ public class TransactionController {
     public BaseResponse<String> deletePost(@RequestHeader("Authorization") String token, @PathVariable Long transactionId) throws BaseException {
         transactionService.deletePost(token, transactionId);
         return new BaseResponse<>("게시글이 삭제되었습니다.");
+    }
+
+    @Operation(summary = "중고거래 게시글 추천 API", description = "중고거래 서비스의 거래 게시글을 추천하거나 추천 취소하기 위한 API입니다.")
+    @ApiResponse(responseCode = "200", description = "요청 성공", content = @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class)))
+    @PostMapping("/recommend")
+    public BaseResponse<String> recommendPost(@RequestHeader("Authorization") String token, @RequestBody RecommendPostReq req) throws BaseException {
+        transactionService.recommendPost(token, req);
+        return new BaseResponse<>("게시글을 추천했습니다.");
     }
 }
