@@ -2,6 +2,7 @@ package HeyPorori.transaction.domain;
 
 import HeyPorori.transaction.config.BaseTimeEntity;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
@@ -22,6 +23,9 @@ public class Recommend extends BaseTimeEntity {
 
     @Column(name = "user_id", nullable = false)
     private Long userId;
+
+    @ColumnDefault("'ACTIVE'")
+    private String status;
 
     @Builder
     public Recommend(Transaction transactionId, Long userId){
