@@ -30,4 +30,11 @@ public class TransactionAttach extends BaseTimeEntity {
         this.transactionId = transactionId;
         this.imageUrl = imageUrl;
     }
+
+    public static TransactionAttach toEntity(Transaction transaction, String imageUrl){
+        return TransactionAttach.builder()
+                .transactionId(transaction)
+                .imageUrl(imageUrl)
+                .build();
+    }
 }
