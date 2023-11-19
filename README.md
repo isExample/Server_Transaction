@@ -12,7 +12,7 @@
 ## ⚙ 깃허브 레포지토리
     📢 MSA로 설계된 프로젝트 특성상 서비스마다 별도의 깃허브 레포지토리로 개발을 진행함.
     
-### 👨‍👩‍👧‍👧 동호회 서버 << 📌현재 레포지토리
+### 👨‍👩‍👧‍👧 동호회 서버
 https://github.com/Hey-Porori/Server_Club.git
 
 ### 📱 iOS
@@ -27,5 +27,5 @@ https://github.com/Hey-Porori/Server_Job.git
 ### 📝 커뮤니티 서버
 https://github.com/Hey-Porori/Server_Community.git
 
-### 🛒 중고거래 서버
+### 🛒 중고거래 서버 << 📌현재 레포지토리
 https://github.com/Hey-Porori/Server_Transaction.git
